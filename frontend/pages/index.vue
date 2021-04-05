@@ -1,47 +1,37 @@
 <template>
-  <div class="container"></div>
+  <div class="container">
+    <h1>Courses</h1>
+
+    <CourseCard
+      v-for="(course, index) in courses"
+      :key="index"
+      :course="course"
+      :data-index="index"
+    />
+  </div>
 </template>
 
 <script>
+import CourseCard from '@/components/CourseCard.vue'
+import { mapState } from 'vuex'
+
 export default {
-  asyncData({ $axios, error }) {
-    const body = {
-      query: `
-        query GetCourses {
-          allCourses {
-              name
-              description
-              releaseDate
-              author
-              comments {
-                id
-              }
-          }
-        }
-      `,
-      variables: {},
-    }
-
-    const options = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-
-    return $axios
-      .post('http://localhost:3000/admin/api', body, options)
-      .then((response) => {
-        return {
-          events: response.data,
-        }
-      })
-      .catch((e) => {
-        error({
-          statusCode: 503,
-          message: 'Unable to fetch events at this time. Please try again.',
-        })
-      })
+  components: {
+    CourseCard,
   },
+  async fetch({ store, error }) {
+    try {
+      await store.dispatch('courses/fetchCourses')
+    } catch (e) {
+      error({
+        statusCode: 503,
+        message: 'Unable to fetch the courses at this time. Please try again.',
+      })
+    }
+  },
+  computed: mapState({
+    courses: (state) => state.courses.courses.data.allCourses,
+  }),
 }
 </script>
 
