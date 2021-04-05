@@ -6,19 +6,38 @@ const options = {
   },
 }
 
-const body = {
+const allCourses = {
   query: `
     query GetCourses {
       allCourses {
-          name
-          description
-          releaseDate
-          author
-          comments {
-            id
-          }
+        id
+        name
+        description
+        releaseDate
+        author
+        comments {
+          id
+        }
       }
     }
+  `,
+  variables: {},
+}
+
+const specificCourse = {
+  query: `
+    query GetCourse {
+      Course(where: {id: "606aaf77ac23d3017815d07b"}) {
+        id
+        name
+        description
+        releaseDate
+        author
+        comments {
+          id
+        }
+      }
+    }  
   `,
   variables: {},
 }
@@ -30,6 +49,9 @@ const apiClient = axios.create({
 
 export default {
   getCourses() {
-    return apiClient.post('/api', body, options)
+    return apiClient.post('/api', allCourses, options)
+  },
+  getCourse() {
+    return apiClient.post('/api', specificCourse, options)
   },
 }
