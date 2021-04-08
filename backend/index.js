@@ -5,44 +5,28 @@ const { AdminUIApp } = require('@keystonejs/app-admin-ui');
 const { StaticApp } = require('@keystonejs/app-static');
 const { PasswordAuthStrategy } = require('@keystonejs/auth-password');
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
+
+const {
+  isAdmin,
+  isLoggedIn,
+  isOwner,
+  isAdminOrOwner,
+  access
+} = require('./misc/helpers');
+
 const UserSchema = require('./schemas/User');
 const CourseSchema = require('./schemas/Course');
 const CommentSchema = require('./schemas/Comment');
 const RoleSchema = require('./schemas/Role');
+const TagSchema = require('./schemas/Tag');
 
 const PROJECT_NAME = 'courses-in-tech';
 const adapterConfig = { mongoUri: process.env.MONGO };
-
-/**
- * You've got a new KeystoneJS Project! Things you might want to do next:
- * - Add adapter config options (See: https://keystonejs.com/keystonejs/adapter-mongoose/)
- * - Select configure access control and authentication (See: https://keystonejs.com/api/access-control)
- */
 
 const keystone = new Keystone({
   adapter: new Adapter(adapterConfig),
   cookieSecret: process.env.COOKIE_SECRET
 });
-
-const isAdmin = ({ authentication: { item: user } }) => !!user && !!user.isAdmin;
-const isLoggedIn = ({ authentication: { item: user } }) => !!user;
-
-const isOwner = ({ authentication: { item: user } }) => {
-  if (!user) {
-    return false;
-  }
-
-  return { id: user.id }
-}
-
-const isAdminOrOwner = auth => {
-  const admin = access.isAdmin(auth);
-  const owner = access.isOwner(auth);
-
-  return admin ? admin : owner;
-}
-
-const access = { isAdmin, isOwner, isLoggedIn, isAdminOrOwner };
 
 keystone.createList('User', {
   fields: UserSchema.fields,
@@ -87,7 +71,18 @@ keystone.createList('Role', {
     delete: isAdmin,
     auth: true
   }
-})
+});
+
+keystone.createList('Tag', {
+  fields: TagSchema.fields,
+  access: {
+    read: true,
+    update: isAdmin,
+    create: isAdmin,
+    delete: isAdmin,
+    auth: true
+  }
+});
 
 const authStrategy = keystone.createAuthStrategy({
   type: PasswordAuthStrategy,

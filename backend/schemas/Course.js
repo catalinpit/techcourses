@@ -45,6 +45,11 @@ module.exports = {
             type: Relationship,
             ref: 'Comment.course',
             many: true
+        },
+        tags: {
+            type: Relationship,
+            ref: 'Tag.courses',
+            many: true
         }
     }
 }
