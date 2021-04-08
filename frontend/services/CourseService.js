@@ -16,7 +16,13 @@ const allCourses = {
         releaseDate
         author
         comments {
-          id
+          name
+          author {
+            username
+          }
+        }
+        tags {
+          name
         }
       }
     }

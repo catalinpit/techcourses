@@ -8,6 +8,12 @@
     <p>
       <b>{{ course.description }}</b>
     </p>
+    <p>{{ course.tags }}</p>
+    <ul>
+      <li v-for="tag in course.tags" :key="tag.id">
+        {{ tag.name }}
+      </li>
+    </ul>
   </div>
 </template>
 

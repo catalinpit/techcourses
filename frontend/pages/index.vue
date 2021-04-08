@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <h1>Courses</h1>
 
     <CourseCard
