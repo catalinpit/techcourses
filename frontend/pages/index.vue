@@ -1,13 +1,15 @@
 <template>
-  <div>
+  <div class="main">
     <h1>Courses</h1>
 
-    <CourseCard
-      v-for="(course, index) in courses"
-      :key="index"
-      :course="course"
-      :data-index="index"
-    />
+    <div class="courses">
+      <CourseCard
+        v-for="(course, index) in courses"
+        :key="index"
+        :course="course"
+        :data-index="index"
+      />
+    </div>
   </div>
 </template>
 
@@ -35,4 +37,20 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 50px 0px;
+}
+
+.courses {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, auto);
+  grid-auto-flow: row;
+  grid-gap: 10px;
+  justify-items: center;
+}
+</style>
