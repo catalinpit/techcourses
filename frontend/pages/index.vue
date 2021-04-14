@@ -8,6 +8,7 @@
         :key="index"
         :course="course"
         :data-index="index"
+        class="courseCard"
       />
     </div>
   </div>
@@ -42,7 +43,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 50px 0px;
 }
 
 .courses {
@@ -50,7 +50,28 @@ export default {
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, auto);
   grid-auto-flow: row;
-  grid-gap: 10px;
+  grid-gap: 0px 50px;
   justify-items: center;
+  margin: 2.5rem;
+}
+
+.courseCard {
+  width: 100%;
+  padding: 1.75rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 0.5rem;
+}
+
+.courseCard:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+@media only screen and (max-width: 1024px) {
+  .courses {
+    display: flex;
+    flex-direction: column;
+    margin: 2.5rem;
+  }
 }
 </style>
